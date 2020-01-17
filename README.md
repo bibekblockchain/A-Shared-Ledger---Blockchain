@@ -50,3 +50,7 @@ To install, instantiate and invoke the chaincode, run injectChaincode.sh script
 ``
 ./injectChaincode.sh
 ``
+
+### Step 6: Visualizing the Ledger
+
+Now you can look at your browser in ``http://localhost:5984/_utils`` and ``http://localhost:7984/_utils`` to see the shared ledger between Koirala Suppliers and Shrestha Retailer.
