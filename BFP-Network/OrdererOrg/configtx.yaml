@@ -1,0 +1,56 @@
+Organizations:
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: ./crypto-orderer/ordererOrganizations/bfp.com/msp
+
+    - &Koirala
+        Name: KoiralaMSP
+        ID: KoiralaMSP
+        MSPDir: ../Koirala_Suppliers/crypto-koirala/peerOrganizations/koirala.bfp.com/msp
+        AnchorPeers:
+            - Host: peer0.koirala.bfp.com
+              Port: 7051
+
+    - &Shrestha
+        Name: ShresthaMSP
+        ID: ShresthaMSP
+        MSPDir: ../Shrestha_Retailer/crypto-shrestha/peerOrganizations/shrestha.bfp.com/msp
+        AnchorPeers:
+            - Host: peer0.koirala.bfp.com
+              Port: 7051
+
+Orderer: &OrdererDefaults
+    OrdererType: solo
+    Addresses:
+        - orderer.bfp.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+Application: &ApplicationDefaults
+    Organizations:
+Profiles:
+    BFPOrdererGenesis:
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Koirala
+                - *Shrestha
+        Consortiums:
+            BFPConsortium:
+                Organizations:
+                    - *Koirala
+                    - *Shrestha
+    BFPChannel:
+        Consortium: BFPConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Koirala
+                - *Shrestha

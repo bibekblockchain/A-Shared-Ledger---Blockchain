@@ -1,0 +1,32 @@
+version: '2'
+
+volumes:
+  orderer.bfp.com:
+
+networks:
+  bfp:
+
+services:
+  orderer.bfp.com:
+    container_name: orderer.bfp.com
+    image: hyperledger/fabric-orderer:$IMAGE_TAG
+    environment:
+      - FABRIC_LOGGING_SPEC=DEBUG
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/channel-artifacts/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=false
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+      - ./channel-artifacts:/var/hyperledger/orderer/channel-artifacts
+      - ./crypto-orderer/ordererOrganizations/bfp.com/orderers/orderer.bfp.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-orderer/ordererOrganizations/bfp.com/orderers/orderer.bfp.com/tls/:/var/hyperledger/orderer/tls
+      - orderer.bfp.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+    container_name: orderer.bfp.com
+    networks:
+      - bfp
