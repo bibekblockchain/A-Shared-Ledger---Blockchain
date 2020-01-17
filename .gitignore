@@ -1,0 +1,4 @@
+crypto-*/
+channel-artifacts/
+docker-compose-koirala-suppliers.yaml
+docker-compose-shrestha-retailer.yaml
